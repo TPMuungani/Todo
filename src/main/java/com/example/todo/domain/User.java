@@ -10,6 +10,7 @@ import java.util.List;
 public class User extends BaseEntity{
     private String first_name;
     private String last_name;
+    private String username;
     private String email;
     private List<Todo> todos;
 }
