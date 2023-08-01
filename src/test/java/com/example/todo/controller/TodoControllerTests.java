@@ -11,10 +11,14 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TodoControllerTests {
@@ -55,14 +59,29 @@ public class TodoControllerTests {
 
     //Requirements - Get a todo using id
 
+//    @GetMapping("/{id}")
+//    public ResponseEntity<Todo> getTodoById(@PathVariable("id") Long id){
+//        return new ResponseEntity<>(todoService.getTodoById(id), HttpStatus.OK);
+//    }
+
     @Test
     public void testGetTodoById(){
+
+        Long id = 1L;
         //Arrange
         Todo todo = new Todo();
+        todo.setId(1L);
         todo.setDescription("test add todo method");
         todo.setTitle("Unit Tests");
 
         //Mock Behaviour
+        Mockito.when(todoService.getTodoById(id)).thenReturn(todo);
+
+        ResponseEntity<Todo> actualTodo = todoController.getTodoById(id);
+
+//        assert
+        assertEquals(HttpStatus.OK, actualTodo.getStatusCode());
+        assertTrue(Objects.equals(actualTodo.getBody().getId(), id));
 
 
     }
