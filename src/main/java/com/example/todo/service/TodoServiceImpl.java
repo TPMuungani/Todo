@@ -50,4 +50,13 @@ public class TodoServiceImpl implements TodoService{
     public void deleteTodo(Long id) {
         todoRepository.deleteById(id);
     }
+    private List<Todo> getATodoWithoutAUserAttachedToIt(){
+        List<Todo> todos = new ArrayList<>();
+        for (Todo todo : todoRepository.findAll()){
+            if (todo.getUser_id() == null){
+                todos.add(todo);
+            }
+        }
+        return todos;
+    }
 }
