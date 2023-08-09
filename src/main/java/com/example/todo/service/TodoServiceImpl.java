@@ -5,7 +5,9 @@ import com.example.todo.exceptions.TodoException;
 import com.example.todo.repository.TodoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TodoServiceImpl implements TodoService{
@@ -24,8 +26,8 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public Todo getTodoById(Long id) {
-        return todoRepository.getReferenceById(id);
+    public Optional<Todo> getTodoById(Long id) {
+        return todoRepository.findById(id);
     }
 
     @Override
@@ -34,22 +36,24 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public Todo editTodo(Long id, String newTitle, String newDescription) throws TodoException {
-        Todo existingTodo = getTodoById(id);
-        if (existingTodo!=null){
-            existingTodo.setTitle(newTitle);
-            existingTodo.setDescription(newDescription);
-            todoRepository.save(existingTodo);
+    public Optional<Todo> editTodo(Long id, String newTitle, String newDescription) throws TodoException {
+        Optional<Todo> existingTodo = getTodoById(id);
+        if (existingTodo.isPresent()){
+            existingTodo.get().setDescription(newDescription);
+            existingTodo.get().setTitle(newTitle);
+            todoRepository.save(existingTodo.get());
         }else {
-            throw new TodoException("Todo does not exist");
+            //throw new TodoException("Todo does not exist");
         }
-        return null;
+        return existingTodo;
     }
 
     @Override
     public void deleteTodo(Long id) {
         todoRepository.deleteById(id);
     }
+
+
     private List<Todo> getATodoWithoutAUserAttachedToIt(){
         List<Todo> todos = new ArrayList<>();
         for (Todo todo : todoRepository.findAll()){

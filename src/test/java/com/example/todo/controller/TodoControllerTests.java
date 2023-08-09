@@ -2,6 +2,7 @@ package com.example.todo.controller;
 
 
 import com.example.todo.domain.Todo;
+import com.example.todo.exceptions.TodoException;
 import com.example.todo.service.TodoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,9 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TodoControllerTests {
@@ -74,17 +75,69 @@ public class TodoControllerTests {
         todo.setDescription("test add todo method");
         todo.setTitle("Unit Tests");
 
-        //Mock Behaviour
-        Mockito.when(todoService.getTodoById(id)).thenReturn(todo);
 
-        ResponseEntity<Todo> actualTodo = todoController.getTodoById(id);
+
+        //Mock Behaviour
+        Mockito.when(todoService.getTodoById(id)).thenReturn(Optional.of(todo));
+
+        ResponseEntity<Optional<Todo>> actualTodo = todoController.getTodoById(id);
 
 //        assert
         assertEquals(HttpStatus.OK, actualTodo.getStatusCode());
-        assertTrue(Objects.equals(actualTodo.getBody().getId(), id));
+        assertTrue(Objects.equals(actualTodo.getBody().get().getId(), id));
 
 
     }
 
+    //Requirements - add a new todo and return Http status Created
+    @Test
+    public void testAddTodo(){
+        //Arrange
+        Todo todo = new Todo();
+        todo.setDescription("New Todo");
+        todo.setTitle("New todo");
+
+        //Mock behaviour
+        Mockito.when(todoService.addTodo(todo)).thenReturn(todo);
+
+        ResponseEntity<Todo> actualTodo = todoController.addTodo(todo);
+
+
+        //Assert
+        assertEquals(HttpStatus.CREATED, actualTodo.getStatusCode());
+        assertNotNull(actualTodo);
+    }
+
+    //Requirements - delete a todo
+//    @Test
+//    public void testDeleteTodo(){
+//        //arrange
+//        Todo todo = new Todo();
+//        todo.setId(1L);
+//        todo.setTitle("Delete");
+//        todo.setDescription("Description");
+//
+//        //Mock Behaviour
+//        Mockito.when(todoService.deleteTodo(1L)).thenReturn;
+//    }
+
+    //Requirements - Edit a todo and return HttpStatus-Ok
+    @Test
+    public void testEditTodo() throws TodoException {
+        //Arrange
+        Todo todo = new Todo();
+        todo.setId(1L);
+        todo.setDescription("Edit");
+        todo.setTitle("Edit");
+
+        //Mock Behaviour
+        Mockito.when(todoService.editTodo(1L, todo.getTitle(), todo.getDescription())).thenReturn(Optional.of(todo));
+
+        ResponseEntity<Optional<Todo>> actualTodo = todoController.editTodo(1L, todo);
+
+        //Assert
+        assertEquals(actualTodo.getStatusCode(), HttpStatus.OK);
+        assertNotNull(actualTodo);
+    }
 
 }

@@ -22,21 +22,25 @@ public class UserServiceImpl implements UserService{
         newUser.setFirst_name(user.getFirst_name());
         newUser.setLast_name(user.getLast_name());
         newUser.setEmail(user.getEmail());
-        return userRepository.save(newUser);
+        userRepository.save(newUser);
+        return user;
     }
 
     @Override
     public User editUser(String existingEmail, String existingUsername, String newUsername, String newEmail, String newFirstName, String newLastName) throws UserException {
-        User oldUser = findUserByEmail(existingEmail);
-        User oldUser1 = findUserByUsername(existingUsername);
-        if (oldUser!=null || oldUser1!=null){
-            oldUser.setFirst_name(newFirstName);
-            oldUser.setLast_name(newLastName);
-            oldUser.setEmail(newEmail);
-            oldUser.setUsername(newUsername);
-            userRepository.save(oldUser);
-        }
-        throw new UserException("User not found");
+        User oldUser = findByUsernameOrEmail(existingUsername, existingEmail);
+        if(oldUser == null) throw new UserException("User not found");
+
+        oldUser.setFirst_name(newFirstName);
+        oldUser.setLast_name(newLastName);
+        oldUser.setEmail(newEmail);
+        oldUser.setUsername(newUsername);
+        return userRepository.save(oldUser);
+    }
+
+    @Override
+    public User findByUsernameOrEmail(String existingUsername, String existingEmail) {
+        return userRepository.findByUsernameOrEmail(existingUsername, existingEmail);
     }
 
     @Override
@@ -46,7 +50,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User findUserByEmail(String email) {
-        return userRepository.findUserByEmal(email);
+        return userRepository.findUserByEmail(email);
     }
 
     @Override

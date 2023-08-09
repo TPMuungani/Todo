@@ -42,7 +42,8 @@ public class UserController {
         return new ResponseEntity<>(userService.editUser(email, username, user.getFirst_name(), user.getLast_name(), user.getUsername(), user.getEmail()), HttpStatus.OK);
     }
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Long id){
         userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
