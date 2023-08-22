@@ -10,9 +10,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-    List<TodoDTO> findByDepartment(String department);
-    List<TodoDTO> findByUser(User user);
-    List<TodoDTO> findByProgressCheck(ProgressCheck progressCheck);
-    List<TodoDTO> findByDepartmentAndProgressCheck(Department department, ProgressCheck progressCheck);
-    List<TodoDTO> findByDepartmentAndUser(Department department, User user);
+    List<Todo> findByDepartment(String department);
+    List<Todo> findByUser(User user);
+    List<Todo> findByProgressCheck(ProgressCheck progressCheck);
+    List<Todo> findByDepartmentAndProgressCheck(Department department, ProgressCheck progressCheck);
+    List<Todo> findByDepartmentAndUser(Department department, User user);
 }
