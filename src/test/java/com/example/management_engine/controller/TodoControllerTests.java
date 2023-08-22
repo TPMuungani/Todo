@@ -1,7 +1,10 @@
 package com.example.management_engine.controller;
 
 
+import com.example.management_engine.domain.Department;
 import com.example.management_engine.domain.Todo;
+import com.example.management_engine.domain.User;
+import com.example.management_engine.enums.ProgressCheck;
 import com.example.management_engine.exceptions.TodoException;
 import com.example.management_engine.service.TodoService;
 import org.junit.Test;
@@ -17,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static javax.swing.text.html.HTML.Tag.U;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -57,11 +61,6 @@ public class TodoControllerTests {
     }
 
     //Requirements - Get a todo using id
-
-//    @GetMapping("/{id}")
-//    public ResponseEntity<Todo> getTodoById(@PathVariable("id") Long id){
-//        return new ResponseEntity<>(todoService.getTodoById(id), HttpStatus.OK);
-//    }
 
     @Test
     public void testGetTodoById(){
@@ -132,6 +131,189 @@ public class TodoControllerTests {
         Mockito.when(todoService.editTodo(1L, todo)).thenReturn(Optional.of(todo));
 
         ResponseEntity<Optional<Todo>> actualTodo = todoController.editTodo(1L, todo);
+
+        //Assert
+        assertEquals(actualTodo.getStatusCode(), HttpStatus.OK);
+        assertNotNull(actualTodo);
+    }
+    //Requirements - get a todo by department and return HttpStatus-Ok
+    @Test
+    public void testGetTodoByDepartment() throws TodoException {
+        //arrange
+        Department department = new Department();
+        department.setId(2L);
+        department.setName("Data Analytics");
+
+        //Arrange
+        Todo todo = new Todo();
+        todo.setId(1L);
+        todo.setDescription("Test");
+        todo.setTitle("Test");
+        todo.setDepartment(department);
+
+        //Mock Behaviour
+        Mockito.when(todoService.findByDepartment(department.getName())).thenReturn(List.of(todo));
+
+        ResponseEntity<List<Todo>> actualTodo = todoController.getTodoByDepartment(department.getName());
+
+        //Assert
+        assertEquals(actualTodo.getStatusCode(), HttpStatus.OK);
+        assertNotNull(actualTodo);
+    }
+
+    //Requirements - get a todo by user and return HttpStatus-Ok
+    @Test
+    public void testGetTodoByUser() throws TodoException {
+        //arrange
+        Department department = new Department();
+        department.setId(2L);
+        department.setName("Data Analytics");
+
+        //Arrange
+        User user = new User();
+        user.setUsername("tmuungani");
+        user.setDepartment(department);
+
+        //Arrange
+        Todo todo = new Todo();
+        todo.setId(1L);
+        todo.setDescription("Test");
+        todo.setTitle("Test");
+        todo.setDepartment(department);
+        todo.setUser(user);
+
+        //Mock Behaviour
+        Mockito.when(todoService.findByUser(user)).thenReturn(List.of(todo));
+
+        ResponseEntity<List<Todo>> actualTodo = todoController.getTodoByUser(user);
+
+        //Assert
+        assertEquals(actualTodo.getStatusCode(), HttpStatus.OK);
+        assertNotNull(actualTodo);
+    }
+
+    //Requirements - get a todo by department and Progress check and return HttpStatus-Ok
+    @Test
+    public void testGetTodoByDepartmentAndProgressCheck() throws TodoException {
+        //arrange
+        Department department = new Department();
+        department.setId(2L);
+        department.setName("Data Analytics");
+
+        //Arrange
+        User user = new User();
+        user.setUsername("tmuungani");
+        user.setDepartment(department);
+
+        //Arrange
+        Todo todo = new Todo();
+        todo.setId(1L);
+        todo.setDescription("Test");
+        todo.setTitle("Test");
+        todo.setDepartment(department);
+        todo.setProgressCheck(ProgressCheck.ON_HOLD);
+        todo.setUser(user);
+
+        //Mock Behaviour
+        Mockito.when(todoService.findByDepartmentAndProgressCheck(department, ProgressCheck.ON_HOLD)).thenReturn(List.of(todo));
+
+        ResponseEntity<List<Todo>> actualTodo = todoController.getTodoByDepartmentAndProgressCheck(department, ProgressCheck.ON_HOLD);
+
+        //Assert
+        assertEquals(actualTodo.getStatusCode(), HttpStatus.OK);
+        assertNotNull(actualTodo);
+    }
+
+    //Requirements - get a todo by department and user and return HttpStatus-Ok
+    @Test
+    public void testGetTodoByDepartmentAndUser() throws TodoException {
+        //arrange
+        Department department = new Department();
+        department.setId(2L);
+        department.setName("Data Analytics");
+
+        //Arrange
+        User user = new User();
+        user.setUsername("tmuungani");
+        user.setDepartment(department);
+
+        //Arrange
+        Todo todo = new Todo();
+        todo.setId(1L);
+        todo.setDescription("Test");
+        todo.setTitle("Test");
+        todo.setDepartment(department);
+        todo.setProgressCheck(ProgressCheck.ON_HOLD);
+        todo.setUser(user);
+
+        //Mock Behaviour
+        Mockito.when(todoService.findByDepartmentAndUser(department, user)).thenReturn(List.of(todo));
+
+        ResponseEntity<List<Todo>> actualTodo = todoController.getTodoByDepartmentAndUser(department, user);
+
+        //Assert
+        assertEquals(actualTodo.getStatusCode(), HttpStatus.OK);
+        assertNotNull(actualTodo);
+    }
+
+    //Requirements - get a todo by Progress check and return HttpStatus-Ok
+    @Test
+    public void testGetTodoByProgressCheck() throws TodoException {
+        //arrange
+        Department department = new Department();
+        department.setId(2L);
+        department.setName("Data Analytics");
+
+        //Arrange
+        User user = new User();
+        user.setUsername("tmuungani");
+        user.setDepartment(department);
+
+        //Arrange
+        Todo todo = new Todo();
+        todo.setId(1L);
+        todo.setDescription("Test");
+        todo.setTitle("Test");
+        todo.setDepartment(department);
+        todo.setProgressCheck(ProgressCheck.ON_HOLD);
+        todo.setUser(user);
+
+        //Mock Behaviour
+        Mockito.when(todoService.getTodoByProgressCheck(ProgressCheck.ON_HOLD)).thenReturn(List.of(todo));
+
+        ResponseEntity<List<Todo>> actualTodo = todoController.getTodoByProgress(ProgressCheck.ON_HOLD);
+
+        //Assert
+        assertEquals(actualTodo.getStatusCode(), HttpStatus.OK);
+        assertNotNull(actualTodo);
+    }
+
+    //Requirements - get a todo by not assigned to user and return HttpStatus-Ok
+    @Test
+    public void testGetTodoWithoutUsers() throws TodoException {
+        //arrange
+        Department department = new Department();
+        department.setId(2L);
+        department.setName("Data Analytics");
+
+        //Arrange
+        User user = new User();
+        user.setUsername("tmuungani");
+        user.setDepartment(department);
+
+        //Arrange
+        Todo todo = new Todo();
+        todo.setId(1L);
+        todo.setDescription("Test");
+        todo.setTitle("Test");
+        todo.setDepartment(department);
+        todo.setProgressCheck(ProgressCheck.ON_HOLD);
+        todo.setUser(user);
+
+        //Mock Behaviour
+        Mockito.when(todoService.getATodoWithoutAUserAttachedToIt()).thenReturn(List.of(todo));
+
+        ResponseEntity<List<Todo>> actualTodo = todoController.getTodoWithoutUser();
 
         //Assert
         assertEquals(actualTodo.getStatusCode(), HttpStatus.OK);
