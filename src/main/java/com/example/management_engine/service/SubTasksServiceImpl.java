@@ -28,9 +28,10 @@ public class SubTasksServiceImpl implements SubTasksService{
 
     @Override
     public SubTasks editASubTaskById(Long id, SubTasks subTasks) {
-        Optional<SubTasks> existingSubTask = Optional.of(subTasksRepository.findById(id).orElseThrow());
+        Optional<SubTasks> existingSubTask = subTasksRepository.findById(id);
         existingSubTask.get().setName(subTasks.getName());
         existingSubTask.get().setProgressCheck(subTasks.getProgressCheck());
-        return subTasksRepository.save(existingSubTask.get());
+        subTasksRepository.save(existingSubTask.get());
+        return existingSubTask.get();
     }
 }

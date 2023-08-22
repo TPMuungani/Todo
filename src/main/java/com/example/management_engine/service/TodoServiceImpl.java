@@ -80,22 +80,22 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public List<TodoDTO> findByDepartment(String department) {
+    public List<Todo> findByDepartment(String department) {
         return todoRepository.findByDepartment(department);
     }
 
     @Override
-    public List<TodoDTO> findByUser(User user) {
+    public List<Todo> findByUser(User user) {
         return todoRepository.findByUser(user);
     }
 
     @Override
-    public List<TodoDTO> findByDepartmentAndProgressCheck(Department department, ProgressCheck progressCheck) {
+    public List<Todo> findByDepartmentAndProgressCheck(Department department, ProgressCheck progressCheck) {
         return todoRepository.findByDepartmentAndProgressCheck(department, progressCheck);
     }
 
     @Override
-    public List<TodoDTO> findByDepartmentAndUser(Department department, User user) {
+    public List<Todo> findByDepartmentAndUser(Department department, User user) {
         return todoRepository.findByDepartmentAndUser(department, user);
     }
 
@@ -111,7 +111,7 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public List<TodoDTO> getTodoByProgressCheck(ProgressCheck progressCheck) {
+    public List<Todo> getTodoByProgressCheck(ProgressCheck progressCheck) {
         return todoRepository.findByProgressCheck(progressCheck);
     }
 

@@ -16,10 +16,10 @@ public interface TodoService {
     List<Todo> getTodos();
     Optional<Todo> editTodo(Long id, Todo todo) throws TodoException;
     void deleteTodo(Long id);
-    List<TodoDTO> findByDepartment(String department);
-    List<TodoDTO> findByUser(User user);
-    List<TodoDTO> findByDepartmentAndProgressCheck(Department department, ProgressCheck progressCheck);
-    List<TodoDTO> findByDepartmentAndUser(Department department, User user);
+    List<Todo> findByDepartment(String department);
+    List<Todo> findByUser(User user);
+    List<Todo> findByDepartmentAndProgressCheck(Department department, ProgressCheck progressCheck);
+    List<Todo> findByDepartmentAndUser(Department department, User user);
     List<Todo> getATodoWithoutAUserAttachedToIt();
-    List<TodoDTO> getTodoByProgressCheck(ProgressCheck progressCheck);
+    List<Todo> getTodoByProgressCheck(ProgressCheck progressCheck);
 }
