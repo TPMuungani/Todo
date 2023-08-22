@@ -44,23 +44,23 @@ public class TodoController {
         return new ResponseEntity<>(todoService.editTodo(id, todo), OK);
     }
     @GetMapping("/department")
-    public ResponseEntity<List<TodoDTO>> getTodoByDepartment(@RequestBody String department){
-        List<TodoDTO> todoList = todoService.findByDepartment(department);
+    public ResponseEntity<List<Todo>> getTodoByDepartment(@RequestBody String department){
+        List<Todo> todoList = todoService.findByDepartment(department);
         return new ResponseEntity<>(todoList, OK);
     }
     @GetMapping("/user")
-    public ResponseEntity<List<TodoDTO>> getTodoByUser(@RequestBody User user){
-        List<TodoDTO> todoList = todoService.findByUser(user);
+    public ResponseEntity<List<Todo>> getTodoByUser(@RequestBody User user){
+        List<Todo> todoList = todoService.findByUser(user);
         return new ResponseEntity<>(todoList, OK);
     }
     @GetMapping("/department-progress")
-    public ResponseEntity<List<TodoDTO>> getTodoByDepartmentAndProgressCheck(@RequestBody Department department, @RequestBody ProgressCheck progressCheck){
-        List<TodoDTO> todoList = todoService.findByDepartmentAndProgressCheck(department, progressCheck);
+    public ResponseEntity<List<Todo>> getTodoByDepartmentAndProgressCheck(@RequestBody Department department, @RequestBody ProgressCheck progressCheck){
+        List<Todo> todoList = todoService.findByDepartmentAndProgressCheck(department, progressCheck);
         return new ResponseEntity<>(todoList, OK);
     }
     @GetMapping("/department-user")
-    public ResponseEntity<List<TodoDTO>> getTodoByDepartmentAndUser(@RequestBody Department department, @RequestBody User user){
-        List<TodoDTO> todoList = todoService.findByDepartmentAndUser(department, user);
+    public ResponseEntity<List<Todo>> getTodoByDepartmentAndUser(@RequestBody Department department, @RequestBody User user){
+        List<Todo> todoList = todoService.findByDepartmentAndUser(department, user);
         return new ResponseEntity<>(todoList, OK);
     }
 
@@ -70,9 +70,9 @@ public class TodoController {
         return new ResponseEntity<>(todoList, OK);
     }
 
-    @GetMapping("/progree")
-    public ResponseEntity<List<TodoDTO>> getTodoByProgress(@RequestBody ProgressCheck progressCheck){
-        List<TodoDTO> todoList = todoService.getTodoByProgressCheck(progressCheck);
+    @GetMapping("/progress")
+    public ResponseEntity<List<Todo>> getTodoByProgress(@RequestBody ProgressCheck progressCheck){
+        List<Todo> todoList = todoService.getTodoByProgressCheck(progressCheck);
         return new ResponseEntity<>(todoList, OK);
     }
 
